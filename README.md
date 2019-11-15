@@ -1,5 +1,3 @@
-# ACLTravelmantics
-
 # API-Authentication
 API based Authentication system ( Login, Registration, Update User &amp; validateToken Flows) using vanilla PHP
 
@@ -7,192 +5,93 @@ API based Authentication system ( Login, Registration, Update User &amp; validat
 Installation
 ------------
 
-Use composer to manage your dependencies and download PHP-JWT:
+1) Clone to folder
+2) Create Database
+3) Run install/database.sql to create a users table
+4) edit config.php 
 
-```bash
-composer require firebase/php-jwt
-```
+
 
 Example
 -------
 ```php
-<?php
-use \Firebase\JWT\JWT;
 
-$key = "example_key";
-$payload = array(
-    "iss" => "http://example.org",
-    "aud" => "http://example.com",
-    "iat" => 1356999524,
-    "nbf" => 1357000000
-);
 
-/**
- * IMPORTANT:
- * You must specify supported algorithms for your application. See
- * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
- * for a list of spec-compliant algorithms.
- */
-$jwt = JWT::encode($payload, $key);
-$decoded = JWT::decode($jwt, $key, array('HS256'));
+  /register
+  
+  ##JSON Body
+   {
+      "firstname" : "John",
+      "lastname" : "Doe",
+      "email" : "johndoe@yahoo.com",
+      "password" : "secret"
+   }
+  
+  ## output 
+    {
+        "message": "User was created."
+    }
 
-print_r($decoded);
 
-/*
- NOTE: This will now be an object instead of an associative array. To get
- an associative array, you will need to cast it as such:
-*/
+   /login
+    ##JSON Body
+    {
+      "email" : "johndoe@yahoo.com",
+      "password" : "secret"
+    }
 
-$decoded_array = (array) $decoded;
+    ## output 
+    {
+    "message": "Login successful",
+    "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9teXBhdHJpY2lhLmNvIiwiYXVkIjoiaHR0cDpcL1wvbXlwYXRyaWNpYS5vcmciLCJpYXQiOjEzNTY5OTk1MjQsIm5iZiI6MTM1NzAwMDAwMCwiZGF0YSI6eyJpZCI6IjQiLCJmaXJzdG5hbWUiOiJDaGluZWR1IiwibGFzdG5hbWUiOiJFamliZW5kdSIsImVtYWlsIjoiY2hpbmV4dHdvcmxkQHlhaG9vLmNvbSJ9fQ.CXSaHBHa893fFyLZ0KPpGr3qurCPzmjBMHVGb1yfH1g"
+     }
 
-/**
- * You can add a leeway to account for when there is a clock skew times between
- * the signing and verifying servers. It is recommended that this leeway should
- * not be bigger than a few minutes.
- *
- * Source: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
- */
-JWT::$leeway = 60; // $leeway in seconds
-$decoded = JWT::decode($jwt, $key, array('HS256'));
 
-?>
+
+   /validateToken
+   ##JSON Body
+    {
+      "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9teXBhdHJpY2lhLmNvIiwiYXVkIjoiaHR0cDpcL1wvbXlwYXRyaWNpYS5vcmciLCJpYXQiOjEzNTY5OTk1MjQsIm5iZiI6MTM1NzAwMDAwMCwiZGF0YSI6eyJpZCI6IjQiLCJmaXJzdG5hbWUiOiJDaGluZWR1IiwibGFzdG5hbWUiOiJFamliZW5kdSIsImVtYWlsIjoiY2hpbmV4dHdvcmxkQHlhaG9vLmNvbSJ9fQ.CXSaHBHa893fFyLZ0KPpGr3qurCPzmjBMHVGb1yfH1g"
+    }
+    ##  output
+    {
+      "message": "Access granted.",
+      "data": {
+          "id": "1",
+          "firstname": "Chinedu",
+          "lastname": "John",
+          "email": "myemailaddress@yahoo.com"
+      }
+    }
+
+
+   /updateUser 
+   ##JSON Body
+   {
+        "firstname" : "Mike",
+        "lastname" : "Dalisay",
+        "email" : "mike@codeofaninja.com",
+        "password" : "555",
+        "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxMzU2OTk5NTI0LCJuYmYiOjEzNTcwMDAwMDAsImRhdGEiOnsiaWQiOiI5IiwiZmlyc3RuYW1lIjoiVmluY2UiLCJsYXN0bmFtZSI6IkRhbGlzYXkiLCJlbWFpbCI6Im1pa2VAY29kZW9mYW5pbmphLmNvbSJ9fQ.3Sv65TVYACkNPo4HMr4NvreyZY16wxG-nSorLi_jykI"
+    }
+     ##  output
+    {
+        "message": "User was updated.",
+        "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9teXBhdHJpY2lhLmNvIiwiYXVkIjoiaHR0cDpcL1wvbXlwYXRyaWNpYS5vcmciLCJpYXQiOjEzNTY5OTk1MjQsIm5iZiI6MTM1NzAwMDAwMCwiZGF0YSI6eyJpZCI6IjEiLCJmaXJzdG5hbWUiOiJDaGluZWR1IiwibGFzdG5hbWUiOiJFamliZW5kdSIsImVtYWlsIjoiY2hpbmV4dHdvcmxkQHlhaG9vLmNvbS5jb20ifX0.ImYYXMXxILEdCDUwPFImKdl0eYjDQp-BUaiD-5s0o7g"
+    }
+
+    ## output error
+    {
+      "message": "Access denied.",
+      "error": "Signature verification failed"
+    }
+    {
+      "message": "Access denied.",
+      "error": "Unexpected control character found"
+    }
+
+
+
+
+
 ```
-Example with RS256 (openssl)
-----------------------------
-```php
-<?php
-use \Firebase\JWT\JWT;
-
-$privateKey = <<<EOD
------BEGIN RSA PRIVATE KEY-----
-MIICXAIBAAKBgQC8kGa1pSjbSYZVebtTRBLxBz5H4i2p/llLCrEeQhta5kaQu/Rn
-vuER4W8oDH3+3iuIYW4VQAzyqFpwuzjkDI+17t5t0tyazyZ8JXw+KgXTxldMPEL9
-5+qVhgXvwtihXC1c5oGbRlEDvDF6Sa53rcFVsYJ4ehde/zUxo6UvS7UrBQIDAQAB
-AoGAb/MXV46XxCFRxNuB8LyAtmLDgi/xRnTAlMHjSACddwkyKem8//8eZtw9fzxz
-bWZ/1/doQOuHBGYZU8aDzzj59FZ78dyzNFoF91hbvZKkg+6wGyd/LrGVEB+Xre0J
-Nil0GReM2AHDNZUYRv+HYJPIOrB0CRczLQsgFJ8K6aAD6F0CQQDzbpjYdx10qgK1
-cP59UHiHjPZYC0loEsk7s+hUmT3QHerAQJMZWC11Qrn2N+ybwwNblDKv+s5qgMQ5
-5tNoQ9IfAkEAxkyffU6ythpg/H0Ixe1I2rd0GbF05biIzO/i77Det3n4YsJVlDck
-ZkcvY3SK2iRIL4c9yY6hlIhs+K9wXTtGWwJBAO9Dskl48mO7woPR9uD22jDpNSwe
-k90OMepTjzSvlhjbfuPN1IdhqvSJTDychRwn1kIJ7LQZgQ8fVz9OCFZ/6qMCQGOb
-qaGwHmUK6xzpUbbacnYrIM6nLSkXgOAwv7XXCojvY614ILTK3iXiLBOxPu5Eu13k
-eUz9sHyD6vkgZzjtxXECQAkp4Xerf5TGfQXGXhxIX52yH+N2LtujCdkQZjXAsGdm
-B2zNzvrlgRmgBrklMTrMYgm1NPcW+bRLGcwgW2PTvNM=
------END RSA PRIVATE KEY-----
-EOD;
-
-$publicKey = <<<EOD
------BEGIN PUBLIC KEY-----
-MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8kGa1pSjbSYZVebtTRBLxBz5H
-4i2p/llLCrEeQhta5kaQu/RnvuER4W8oDH3+3iuIYW4VQAzyqFpwuzjkDI+17t5t
-0tyazyZ8JXw+KgXTxldMPEL95+qVhgXvwtihXC1c5oGbRlEDvDF6Sa53rcFVsYJ4
-ehde/zUxo6UvS7UrBQIDAQAB
------END PUBLIC KEY-----
-EOD;
-
-$payload = array(
-    "iss" => "example.org",
-    "aud" => "example.com",
-    "iat" => 1356999524,
-    "nbf" => 1357000000
-);
-
-$jwt = JWT::encode($payload, $privateKey, 'RS256');
-echo "Encode:\n" . print_r($jwt, true) . "\n";
-
-$decoded = JWT::decode($jwt, $publicKey, array('RS256'));
-
-/*
- NOTE: This will now be an object instead of an associative array. To get
- an associative array, you will need to cast it as such:
-*/
-
-$decoded_array = (array) $decoded;
-echo "Decode:\n" . print_r($decoded_array, true) . "\n";
-?>
-```
-
-Changelog
----------
-
-#### 5.0.0 / 2017-06-26
-- Support RS384 and RS512.
-  See [#117](https://github.com/firebase/php-jwt/pull/117). Thanks [@joostfaassen](https://github.com/joostfaassen)!
-- Add an example for RS256 openssl.
-  See [#125](https://github.com/firebase/php-jwt/pull/125). Thanks [@akeeman](https://github.com/akeeman)!
-- Detect invalid Base64 encoding in signature.
-  See [#162](https://github.com/firebase/php-jwt/pull/162). Thanks [@psignoret](https://github.com/psignoret)!
-- Update `JWT::verify` to handle OpenSSL errors.
-  See [#159](https://github.com/firebase/php-jwt/pull/159). Thanks [@bshaffer](https://github.com/bshaffer)!
-- Add `array` type hinting to `decode` method
-  See [#101](https://github.com/firebase/php-jwt/pull/101). Thanks [@hywak](https://github.com/hywak)!
-- Add all JSON error types.
-  See [#110](https://github.com/firebase/php-jwt/pull/110). Thanks [@gbalduzzi](https://github.com/gbalduzzi)!
-- Bugfix 'kid' not in given key list.
-  See [#129](https://github.com/firebase/php-jwt/pull/129). Thanks [@stampycode](https://github.com/stampycode)!
-- Miscellaneous cleanup, documentation and test fixes.
-  See [#107](https://github.com/firebase/php-jwt/pull/107), [#115](https://github.com/firebase/php-jwt/pull/115),
-  [#160](https://github.com/firebase/php-jwt/pull/160), [#161](https://github.com/firebase/php-jwt/pull/161), and
-  [#165](https://github.com/firebase/php-jwt/pull/165). Thanks [@akeeman](https://github.com/akeeman),
-  [@chinedufn](https://github.com/chinedufn), and [@bshaffer](https://github.com/bshaffer)!
-
-#### 4.0.0 / 2016-07-17
-- Add support for late static binding. See [#88](https://github.com/firebase/php-jwt/pull/88) for details. Thanks to [@chappy84](https://github.com/chappy84)!
-- Use static `$timestamp` instead of `time()` to improve unit testing. See [#93](https://github.com/firebase/php-jwt/pull/93) for details. Thanks to [@josephmcdermott](https://github.com/josephmcdermott)!
-- Fixes to exceptions classes. See [#81](https://github.com/firebase/php-jwt/pull/81) for details. Thanks to [@Maks3w](https://github.com/Maks3w)!
-- Fixes to PHPDoc. See [#76](https://github.com/firebase/php-jwt/pull/76) for details. Thanks to [@akeeman](https://github.com/akeeman)!
-
-#### 3.0.0 / 2015-07-22
-- Minimum PHP version updated from `5.2.0` to `5.3.0`.
-- Add `\Firebase\JWT` namespace. See
-[#59](https://github.com/firebase/php-jwt/pull/59) for details. Thanks to
-[@Dashron](https://github.com/Dashron)!
-- Require a non-empty key to decode and verify a JWT. See
-[#60](https://github.com/firebase/php-jwt/pull/60) for details. Thanks to
-[@sjones608](https://github.com/sjones608)!
-- Cleaner documentation blocks in the code. See
-[#62](https://github.com/firebase/php-jwt/pull/62) for details. Thanks to
-[@johanderuijter](https://github.com/johanderuijter)!
-
-#### 2.2.0 / 2015-06-22
-- Add support for adding custom, optional JWT headers to `JWT::encode()`. See
-[#53](https://github.com/firebase/php-jwt/pull/53/files) for details. Thanks to
-[@mcocaro](https://github.com/mcocaro)!
-
-#### 2.1.0 / 2015-05-20
-- Add support for adding a leeway to `JWT:decode()` that accounts for clock skew
-between signing and verifying entities. Thanks to [@lcabral](https://github.com/lcabral)!
-- Add support for passing an object implementing the `ArrayAccess` interface for
-`$keys` argument in `JWT::decode()`. Thanks to [@aztech-dev](https://github.com/aztech-dev)!
-
-#### 2.0.0 / 2015-04-01
-- **Note**: It is strongly recommended that you update to > v2.0.0 to address
-  known security vulnerabilities in prior versions when both symmetric and
-  asymmetric keys are used together.
-- Update signature for `JWT::decode(...)` to require an array of supported
-  algorithms to use when verifying token signatures.
-
-
-Tests
------
-Run the tests using phpunit:
-
-```bash
-$ pear install PHPUnit
-$ phpunit --configuration phpunit.xml.dist
-PHPUnit 3.7.10 by Sebastian Bergmann.
-.....
-Time: 0 seconds, Memory: 2.50Mb
-OK (5 tests, 5 assertions)
-```
-
-New Lines in private keys
------
-
-If your private key contains `\n` characters, be sure to wrap it in double quotes `""`
-and not single quotes `''` in order to properly interpret the escaped characters.
-
-License
--------
-[3-Clause BSD](http://opensource.org/licenses/BSD-3-Clause).
-
