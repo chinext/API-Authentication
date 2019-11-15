@@ -17,6 +17,8 @@ Example
 ```php
 
 
+
+  -------------------------------------------------------------------------------------------
   /register
   
   ##JSON Body
@@ -33,6 +35,9 @@ Example
     }
 
 
+
+
+  -------------------------------------------------------------------------------------------
    /login
     ##JSON Body
     {
@@ -48,6 +53,8 @@ Example
 
 
 
+
+  -------------------------------------------------------------------------------------------
    /validateToken
    ##JSON Body
     {
@@ -58,19 +65,22 @@ Example
       "message": "Access granted.",
       "data": {
           "id": "1",
-          "firstname": "Chinedu",
-          "lastname": "John",
-          "email": "myemailaddress@yahoo.com"
+          "firstname": "John",
+          "lastname": "Doe",
+          "email": "johndoe@yahoo.com"
       }
     }
 
 
+
+  
+  -------------------------------------------------------------------------------------------
    /updateUser 
    ##JSON Body
    {
-        "firstname" : "Mike",
-        "lastname" : "Dalisay",
-        "email" : "mike@codeofaninja.com",
+        "firstname" : "John",
+        "lastname" : "Doe",
+        "email" : "johndoe@yahoo.com",
         "password" : "555",
         "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxMzU2OTk5NTI0LCJuYmYiOjEzNTcwMDAwMDAsImRhdGEiOnsiaWQiOiI5IiwiZmlyc3RuYW1lIjoiVmluY2UiLCJsYXN0bmFtZSI6IkRhbGlzYXkiLCJlbWFpbCI6Im1pa2VAY29kZW9mYW5pbmphLmNvbSJ9fQ.3Sv65TVYACkNPo4HMr4NvreyZY16wxG-nSorLi_jykI"
     }
