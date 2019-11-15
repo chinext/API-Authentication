@@ -22,7 +22,9 @@ class AuthController
 
     public function setHeader()
     {
-        header("Access-Control-Allow-Origin: http://localhost/patricia-api-authentication/");
+
+        $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" .$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; 
+        header("Access-Control-Allow-Origin: ".$link);
         header("Content-Type: application/json; charset=UTF-8");
         header("Access-Control-Allow-Methods: POST");
         header("Access-Control-Max-Age: 3600");
